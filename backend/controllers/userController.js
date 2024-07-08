@@ -66,3 +66,7 @@ export const getUser = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getHello = async (req, res) => {
+  return res.status(200).json({ message: "HELLO" });
+};
