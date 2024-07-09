@@ -3,7 +3,7 @@ import React from "react";
 
 function Hero() {
   return (
-    <section className="bg-background min-h-[357px] flex items-center">
+    <section className="bg-[#d4d4d4] min-h-[357px] flex items-center">
       <div className="global-container text-center">
         <h1 className="font-medium text-[40px] max-md:text-[25px]">
           Your Ultimate Online Task Management Solution

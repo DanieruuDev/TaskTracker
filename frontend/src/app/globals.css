@@ -4,7 +4,7 @@
 :root {
   --primary-color: #1c87e1;
   --secondary-color: #424242;
-  --bg-color: #888888;
+  --bg-color: white;
 }
 .global-container {
   max-width: 1050px;

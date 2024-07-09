@@ -121,7 +121,7 @@ function Page() {
                     <FormControl>
                       <Input
                         {...field}
-                        className="rounded-[7px] border-[#1C87E1]"
+                        className="rounded-[7px] border-[#1C87E1] bg-white"
                       />
                     </FormControl>
                     <FormMessage className="text-red-500" />

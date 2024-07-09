@@ -156,7 +156,7 @@ function Page() {
     return <Spinner />;
   }
   return (
-    <div className="pt-[72px] bg-[#D9D9D9] min-h-[100vh]">
+    <div className="pt-[72px] bg-[#dddddd] min-h-[100vh]">
       <Navigation name="task" />
 
       {/*task section*/}
