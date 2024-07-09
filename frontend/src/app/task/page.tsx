@@ -4,15 +4,13 @@ import Navigation from "../ui/shared/Navigation";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Spinner from "../ui/Spinner";
-import { FaCircle } from "react-icons/fa";
-import { FaTasks } from "react-icons/fa";
+import { FaCircle, FaTasks } from "react-icons/fa";
 import CreateTask from "../ui/CreateTask";
 import { useToast } from "@/components/ui/use-toast";
 import Modal from "../ui/Modal";
 import { EditTaskProps } from "../ui/Modal";
 import TaskCard from "../ui/TaskCard";
-import { taskProps } from "@/Interfaces/Interface";
-import { User } from "@/Interfaces/Interface";
+import { taskProps, User } from "@/Interfaces/Interface";
 
 function Page() {
   const [user, setUser] = useState<User | null>(null);
@@ -23,6 +21,9 @@ function Page() {
   const completed = tasks.filter((task) => task.completed === true);
   const todo = tasks.filter((task) => task.completed === false);
   const [showModal, setShowModal] = useState(false);
+  const [taskLoading, setTaskLoading] = useState<{ [key: string]: boolean }>(
+    {}
+  );
   const [selectedTask, setSelectedTask] = useState<taskProps | null>(null);
   const deploymentURL = "https://tasktracker-gjg6.onrender.com";
 
@@ -36,6 +37,7 @@ function Page() {
     fetchTasks(token);
     setUser(user);
   }, [router]);
+
   const fetchTasks = async (token: string) => {
     try {
       const response = await axios.get(`${deploymentURL}/tasks/getTasks`, {
@@ -53,9 +55,11 @@ function Page() {
       }
     }
   };
+
   const markTask = async (taskId: string, completed: boolean) => {
     const token = localStorage.getItem("token") as string;
     try {
+      setTaskLoading((prev) => ({ ...prev, [taskId]: true }));
       const response = await axios.patch(
         `${deploymentURL}/tasks/updateTask/${taskId}`,
         { completed },
@@ -66,6 +70,11 @@ function Page() {
         }
       );
       if (response.status === 200) {
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === taskId ? { ...task, completed } : task
+          )
+        );
         toast({
           title: "Task status changed",
           duration: 2000,
@@ -74,11 +83,15 @@ function Page() {
       }
     } catch (error: any) {
       console.error("Error updating task:", error);
+    } finally {
+      setTaskLoading((prev) => ({ ...prev, [taskId]: false }));
     }
   };
+
   const deleteTask = async (taskId: string) => {
     const token = localStorage.getItem("token") as string;
     try {
+      setTaskLoading((prev) => ({ ...prev, [taskId]: true }));
       const response = await axios.delete(
         `${deploymentURL}/tasks/deleteTask/${taskId}`,
         {
@@ -88,39 +101,39 @@ function Page() {
         }
       );
       if (response.status === 200) {
+        setTasks((prevTasks) =>
+          prevTasks.filter((task) => task._id !== taskId)
+        );
         toast({
           title: "Task has been deleted",
           duration: 2000,
         });
-        fetchTasks(token);
       }
     } catch (error: any) {
-      console.error("Error updating task:", error);
+      console.error("Error deleting task:", error);
+    } finally {
+      setTaskLoading((prev) => ({ ...prev, [taskId]: false }));
     }
   };
-  const getTask = async (taskId: string) => {
-    const token = localStorage.getItem("token") as string;
+
+  const getTask = (taskId: string) => {
     try {
-      const response = await axios.get(
-        `${deploymentURL}/tasks/getTask/${taskId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.status === 200) {
-        setSelectedTask(response.data);
+      const foundTask = tasks.find((task) => task._id === taskId);
+      if (foundTask) {
+        setSelectedTask(foundTask);
         setShowModal(true);
+      } else {
+        console.warn(`Task with id ${taskId} not found in client-side state.`);
       }
-    } catch (error: any) {
-      console.error("Error updating task:", error);
+    } catch (error) {
+      console.error("Error fetching task:", error);
     }
   };
+
   const editTask = async ({ taskId, values }: EditTaskProps) => {
     const token = localStorage.getItem("token") as string;
     try {
-      setLoading(true);
+      setTaskLoading((prev) => ({ ...prev, [taskId as string]: true }));
       const response = await axios.patch(
         `${deploymentURL}/tasks/updateTask/${taskId}`,
         {
@@ -139,27 +152,33 @@ function Page() {
           title: "Task has been updated",
           duration: 2000,
         });
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === taskId ? { ...task, ...values } : task
+          )
+        );
         fetchTasks(token);
-        setLoading(false);
       }
     } catch (error: any) {
       console.error("Error updating task:", error);
     } finally {
-      setLoading(false);
+      setTaskLoading((prev) => ({ ...prev, [taskId as string]: false }));
     }
   };
+
   function closeModal() {
     setShowModal(false);
   }
-  console.log(user);
+
   if (loading) {
     return <Spinner />;
   }
+
   return (
     <div className="pt-[72px] bg-[#dddddd] min-h-[100vh]">
       <Navigation name="task" />
 
-      {/*task section*/}
+      {/* Task section */}
       <div className="flex-1 global-container">
         <h1 className="mt-4 text-4xl font-bold text-primary text-center">
           Welcome {user?.username}!
@@ -201,7 +220,9 @@ function Page() {
           <CreateTask setTasks={setTasks} fetchTask={fetchTasks} />
 
           <div className="mt-4 grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-2">
-            {tasks.length === 0 ? (
+            {loading ? (
+              <Spinner />
+            ) : tasks.length === 0 ? (
               <p>No tasks yet</p>
             ) : (
               tasks.map((task) => (
@@ -212,6 +233,7 @@ function Page() {
                   getTask={getTask}
                   deleteTask={deleteTask}
                   markTask={markTask}
+                  taskLoading={taskLoading}
                 />
               ))
             )}
