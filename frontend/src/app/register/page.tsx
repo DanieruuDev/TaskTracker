@@ -42,7 +42,6 @@ const formSchema = z.object({
 
 function Page() {
   const [loading, setLoading] = useState(true);
-  const API_URL = "https://task-tracker-api-kappa.vercel.app/";
   const [error, setError] = useState(null);
   const router = useRouter();
   const { toast } = useToast();
@@ -68,7 +67,10 @@ function Page() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(`${API_URL}/users/register`, values);
+      const response = await axios.post(
+        "http://localhost:5000/users/register",
+        values
+      );
       if (response.status === 200) {
         toast({
           title: "Registered succesfully",
