@@ -47,12 +47,13 @@ function TaskForm({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const token = localStorage.getItem("token");
+    const deploymentURL = "https://tasktracker-gjg6.onrender.com";
     let { title, description } = values;
     if (title === "") title = "Untitled task";
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/tasks/createTask",
+        `${deploymentURL}/tasks/createTask`,
         {
           title,
           description,

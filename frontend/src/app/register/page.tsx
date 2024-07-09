@@ -45,6 +45,7 @@ function Page() {
   const [error, setError] = useState(null);
   const router = useRouter();
   const { toast } = useToast();
+  const deploymentURL = "https://tasktracker-gjg6.onrender.com";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -68,7 +69,7 @@ function Page() {
     setError(null);
     try {
       const response = await axios.post(
-        "http://localhost:5000/users/register",
+        `${deploymentURL}/users/register`,
         values
       );
       if (response.status === 200) {

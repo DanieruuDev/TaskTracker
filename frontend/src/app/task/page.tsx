@@ -24,6 +24,7 @@ function Page() {
   const todo = tasks.filter((task) => task.completed === false);
   const [showModal, setShowModal] = useState(false);
   const [selectedTask, setSelectedTask] = useState<taskProps | null>(null);
+  const deploymentURL = "https://tasktracker-gjg6.onrender.com";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -37,7 +38,7 @@ function Page() {
   }, [router]);
   const fetchTasks = async (token: string) => {
     try {
-      const response = await axios.get("http://localhost:5000/tasks/getTasks", {
+      const response = await axios.get(`${deploymentURL}/tasks/getTasks`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -56,7 +57,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.patch(
-        `http://localhost:5000/tasks/updateTask/${taskId}`,
+        `${deploymentURL}/tasks/updateTask/${taskId}`,
         { completed },
         {
           headers: {
@@ -79,7 +80,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.delete(
-        `http://localhost:5000/tasks/deleteTask/${taskId}`,
+        `${deploymentURL}/tasks/deleteTask/${taskId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -101,7 +102,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.get(
-        `http://localhost:5000/tasks/getTask/${taskId}`,
+        `${deploymentURL}/tasks/getTask/${taskId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,7 +122,7 @@ function Page() {
     try {
       setLoading(true);
       const response = await axios.patch(
-        `http://localhost:5000/tasks/updateTask/${taskId}`,
+        `${deploymentURL}/tasks/updateTask/${taskId}`,
         {
           title: values.title,
           description: values.description,
