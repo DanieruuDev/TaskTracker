@@ -1,10 +1,10 @@
-import connectDB from "./api/utils/db.js";
+import connectDB from "./utils/db.js";
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
-import userRouter from "./api/routes/userRoutes.js";
-import taskRouter from "./api/routes/taskRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+import taskRouter from "./routes/taskRoutes.js";
 
 dotenv.config();
 const app = express();
