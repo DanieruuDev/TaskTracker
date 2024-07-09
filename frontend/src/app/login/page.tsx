@@ -30,6 +30,7 @@ function Page() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
+  const API_URL = "https://task-tracker-api-kappa.vercel.app/";
   const { toast } = useToast();
 
   useEffect(() => {
@@ -51,10 +52,7 @@ function Page() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post(
-        "http://localhost:5000/users/login",
-        values
-      );
+      const response = await axios.post(`${API_URL}/users/login`, values);
 
       if (response.status === 401) {
         throw new Error("Incorrect username or password");

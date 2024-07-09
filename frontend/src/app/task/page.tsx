@@ -15,6 +15,7 @@ import { taskProps } from "@/Interfaces/Interface";
 import { User } from "@/Interfaces/Interface";
 
 function Page() {
+  const API_URL = "https://task-tracker-api-kappa.vercel.app/";
   const [user, setUser] = useState<User | null>(null);
   const [tasks, setTasks] = useState<taskProps[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +38,7 @@ function Page() {
   }, [router]);
   const fetchTasks = async (token: string) => {
     try {
-      const response = await axios.get("http://localhost:5000/tasks/getTasks", {
+      const response = await axios.get(`${API_URL}/tasks/getTasks`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -56,7 +57,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.patch(
-        `http://localhost:5000/tasks/updateTask/${taskId}`,
+        `${API_URL}/tasks/updateTask/${taskId}`,
         { completed },
         {
           headers: {
@@ -79,7 +80,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.delete(
-        `http://localhost:5000/tasks/deleteTask/${taskId}`,
+        `${API_URL}/tasks/deleteTask/${taskId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -100,14 +101,11 @@ function Page() {
   const getTask = async (taskId: string) => {
     const token = localStorage.getItem("token") as string;
     try {
-      const response = await axios.get(
-        `http://localhost:5000/tasks/getTask/${taskId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/tasks/getTask/${taskId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.status === 200) {
         setSelectedTask(response.data);
         setShowModal(true);
@@ -121,7 +119,7 @@ function Page() {
     try {
       setLoading(true);
       const response = await axios.patch(
-        `http://localhost:5000/tasks/updateTask/${taskId}`,
+        `${API_URL}/tasks/updateTask/${taskId}`,
         {
           title: values.title,
           description: values.description,
