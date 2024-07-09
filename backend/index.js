@@ -9,10 +9,11 @@ import taskRouter from "./routes/taskRoutes.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
-app.get("/", (req, res) => res.status(200).json({ message: "HELLO" }));
+app.get("/users", (req, res) => res.status(200).json({ message: "HELLO" }));
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
-app.use(cors());
+
 connectDB()
   .then(() => {
     console.log("Connected to the database");
