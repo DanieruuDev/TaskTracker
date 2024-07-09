@@ -9,7 +9,7 @@ import taskRouter from "./routes/taskRoutes.js";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
-app.get("/users", (req, res) => res.status(200).json({ message: "HELLO" }));
+app.get("/", (req, res) => res.status(200).json({ message: "HELLO" }));
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
@@ -17,8 +17,8 @@ app.use(bodyParser.json());
 connectDB()
   .then(() => {
     console.log("Connected to the database");
-    app.use("/users", userRouter);
-    app.use("/tasks", taskRouter);
+    app.use("/api/users", userRouter);
+    app.use("/api/tasks", taskRouter);
     app.listen(PORT, () => {
       console.log(`App is listening to port: ${PORT}`);
     });
