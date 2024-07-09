@@ -5,7 +5,6 @@ import {
   getUser,
   getHello,
 } from "../controllers/userController.js";
-import authMiddleware from "../utils/auth.js";
 const userRouter = express.Router();
 
 userRouter.post("/register", createUser);
