@@ -37,11 +37,14 @@ function Page() {
   }, [router]);
   const fetchTasks = async (token: string) => {
     try {
-      const response = await axios.get("http://localhost:5000/tasks/getTasks", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:5000/api/tasks/getTasks",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       setTasks(response.data);
     } catch (error: any) {
       console.error("Error fetching tasks:", error);
@@ -56,7 +59,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.patch(
-        `http://localhost:5000/tasks/updateTask/${taskId}`,
+        `http://localhost:5000/api/tasks/updateTask/${taskId}`,
         { completed },
         {
           headers: {
@@ -79,7 +82,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.delete(
-        `http://localhost:5000/tasks/deleteTask/${taskId}`,
+        `http://localhost:5000/api/tasks/deleteTask/${taskId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -101,7 +104,7 @@ function Page() {
     const token = localStorage.getItem("token") as string;
     try {
       const response = await axios.get(
-        `http://localhost:5000/tasks/getTask/${taskId}`,
+        `http://localhost:5000/api/tasks/getTask/${taskId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,7 +124,7 @@ function Page() {
     try {
       setLoading(true);
       const response = await axios.patch(
-        `http://localhost:5000/tasks/updateTask/${taskId}`,
+        `http://localhost:5000/api/tasks/updateTask/${taskId}`,
         {
           title: values.title,
           description: values.description,

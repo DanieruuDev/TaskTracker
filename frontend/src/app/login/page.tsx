@@ -52,7 +52,7 @@ function Page() {
     setError(null);
     try {
       const response = await axios.post(
-        "http://localhost:5000/users/login",
+        "http://localhost:5000/api/users/login",
         values
       );
 
