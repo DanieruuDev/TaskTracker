@@ -70,7 +70,7 @@ function Page() {
     setError(null);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/register",
+        "http://localhost:5000/users/register",
         values
       );
       if (response.status === 200) {

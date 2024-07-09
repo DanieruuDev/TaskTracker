@@ -28,9 +28,11 @@ const formSchema = z.object({
 function TaskForm({
   setTasks,
   handleClose,
+  fetchTask,
 }: {
   setTasks: any;
   handleClose: () => void;
+  fetchTask: (token: string) => void;
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -50,7 +52,7 @@ function TaskForm({
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/tasks/createTask",
+        "http://localhost:5000/tasks/createTask",
         {
           title,
           description,
@@ -69,6 +71,7 @@ function TaskForm({
         });
         setTasks((prevTasks: taskProps[]) => [...prevTasks, newTask]);
         setLoading(false);
+        fetchTask(token as string);
         handleClose();
       } else {
         toast({

@@ -12,7 +12,13 @@ import {
 import TaskForm from "./TaskForm";
 import { useState } from "react";
 
-function CreateTask({ setTasks }: { setTasks: any }) {
+function CreateTask({
+  setTasks,
+  fetchTask,
+}: {
+  setTasks: any;
+  fetchTask: (token: string) => void;
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => {
     setIsOpen(false);
@@ -28,7 +34,11 @@ function CreateTask({ setTasks }: { setTasks: any }) {
             <DialogTitle>Create new task</DialogTitle>
             <DialogDescription>Make sure to have a title</DialogDescription>
           </DialogHeader>
-          <TaskForm setTasks={setTasks} handleClose={handleClose} />
+          <TaskForm
+            setTasks={setTasks}
+            handleClose={handleClose}
+            fetchTask={fetchTask}
+          />
         </DialogContent>
       </Dialog>
     </>
