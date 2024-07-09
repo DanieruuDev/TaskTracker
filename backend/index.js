@@ -17,8 +17,8 @@ app.use(bodyParser.json());
 connectDB()
   .then(() => {
     console.log("Connected to the database");
-    app.use("/api/users", userRouter);
-    app.use("/api/tasks", taskRouter);
+    app.use("/users", userRouter);
+    app.use("/tasks", taskRouter);
     app.listen(PORT, () => {
       console.log(`App is listening to port: ${PORT}`);
     });
