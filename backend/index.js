@@ -10,13 +10,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
 app.get("/", (req, res) => res.status(200).json({ message: "HELLO" }));
-app.use(
-  cors({
-    origin: ["apiurl"],
-    methods: ["POST", "GET", "PATCH", "DELETE"],
-    credentials: true,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
