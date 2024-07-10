@@ -62,10 +62,11 @@ function Page() {
         throw new Error("Incorrect username or password");
       }
       if (response.status === 200) {
+        router.push("/task");
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("token", response.data.token);
 
-        router.push("/task");
+        setLoading(false);
       } else {
         console.log("Error");
         throw new Error("Error occured while logging in");
@@ -73,7 +74,6 @@ function Page() {
     } catch (error: any) {
       setError(error.response?.data?.message || "An unexpected error occurred");
       console.log("error happen");
-      setLoading(false);
     }
   }
 
