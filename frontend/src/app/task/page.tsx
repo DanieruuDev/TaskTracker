@@ -109,16 +109,12 @@ function Page() {
   };
 
   const getTask = (taskId: string) => {
-    try {
-      const foundTask = tasks.find((task) => task._id === taskId);
-      if (foundTask) {
-        setSelectedTask(foundTask);
-        setShowModal(true);
-      } else {
-        console.warn(`Task with id ${taskId} not found in client-side state.`);
-      }
-    } catch (error) {
-      console.error("Error fetching task:", error);
+    const foundTask = tasks.find((task) => task._id === taskId);
+    if (foundTask) {
+      setSelectedTask(foundTask);
+      setShowModal(true);
+    } else {
+      console.warn(`Task with id ${taskId} not found in client-side state.`);
     }
   };
 

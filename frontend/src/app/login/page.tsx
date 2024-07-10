@@ -30,7 +30,6 @@ function Page() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { toast } = useToast();
   const deploymentURL = "https://tasktracker-gjg6.onrender.com";
 
   useEffect(() => {
@@ -38,7 +37,7 @@ function Page() {
     if (token) {
       router.push("/task");
     } else {
-      setLoading(false); // Only set loading to false if not redirected
+      setLoading(false);
     }
   }, [router]);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,10 +47,12 @@ function Page() {
       password: "",
     },
   });
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setLoading(true);
     setError(null);
     try {
+      setLoading(true);
+
       const response = await axios.post(
         ` ${deploymentURL}/users/login`,
         values
@@ -61,10 +62,6 @@ function Page() {
         throw new Error("Incorrect username or password");
       }
       if (response.status === 200) {
-        toast({
-          title: "Loging in...",
-          duration: 900,
-        });
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("token", response.data.token);
 

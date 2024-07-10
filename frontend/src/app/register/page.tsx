@@ -80,9 +80,8 @@ function Page() {
 
         setLoading(false);
         form.reset();
-        setTimeout(() => {
-          router.push("/login");
-        }, 1000);
+
+        router.push("/login");
       } else {
         console.log("Error");
       }
