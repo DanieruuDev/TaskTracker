@@ -58,9 +58,14 @@ function Page() {
 
   const markTask = async (taskId: string, completed: boolean) => {
     const token = localStorage.getItem("token") as string;
+
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task._id === taskId ? { ...task, completed } : task
+      )
+    );
     try {
-      setTaskLoading((prev) => ({ ...prev, [taskId]: true }));
-      const response = await axios.patch(
+      await axios.patch(
         `${deploymentURL}/tasks/updateTask/${taskId}`,
         { completed },
         {
@@ -69,22 +74,9 @@ function Page() {
           },
         }
       );
-      if (response.status === 200) {
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task._id === taskId ? { ...task, completed } : task
-          )
-        );
-        toast({
-          title: "Task status changed",
-          duration: 2000,
-        });
-        fetchTasks(token);
-      }
+      fetchTasks(token);
     } catch (error: any) {
       console.error("Error updating task:", error);
-    } finally {
-      setTaskLoading((prev) => ({ ...prev, [taskId]: false }));
     }
   };
 
@@ -132,9 +124,13 @@ function Page() {
 
   const editTask = async ({ taskId, values }: EditTaskProps) => {
     const token = localStorage.getItem("token") as string;
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task._id === taskId ? { ...task, ...values } : task
+      )
+    );
     try {
-      setTaskLoading((prev) => ({ ...prev, [taskId as string]: true }));
-      const response = await axios.patch(
+      await axios.patch(
         `${deploymentURL}/tasks/updateTask/${taskId}`,
         {
           title: values.title,
@@ -147,22 +143,9 @@ function Page() {
           },
         }
       );
-      if (response.status === 200) {
-        toast({
-          title: "Task has been updated",
-          duration: 2000,
-        });
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task._id === taskId ? { ...task, ...values } : task
-          )
-        );
-        fetchTasks(token);
-      }
+      fetchTasks(token);
     } catch (error: any) {
       console.error("Error updating task:", error);
-    } finally {
-      setTaskLoading((prev) => ({ ...prev, [taskId as string]: false }));
     }
   };
 

@@ -68,9 +68,7 @@ function Page() {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("token", response.data.token);
 
-        setTimeout(() => {
-          router.push("/task");
-        }, 1000);
+        router.push("/task");
       } else {
         console.log("Error");
         throw new Error("Error occured while logging in");
@@ -89,7 +87,7 @@ function Page() {
     <div>
       <Navigation name="authentication" />
 
-      <div className="min-h-[600px] w-full flex justify-center items-center">
+      <div className="min-h-[600px] w-full flex justify-center items-center px-5">
         <div className="w-full">
           <h1 className="text-[37px] max-w-[364px] font-light text-center mx-auto ">
             Welcome to Tasky
