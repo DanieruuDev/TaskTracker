@@ -65,7 +65,6 @@ function Page() {
         router.push("/task");
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("token", response.data.token);
-
         setLoading(false);
       } else {
         console.log("Error");
@@ -74,6 +73,8 @@ function Page() {
     } catch (error: any) {
       setError(error.response?.data?.message || "An unexpected error occurred");
       console.log("error happen");
+    } finally {
+      setLoading(false);
     }
   }
 
