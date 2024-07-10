@@ -50,12 +50,16 @@ function Page() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null);
+    const trimmedValues = {
+      username: values.username.trim(),
+      password: values.password,
+    };
     try {
       setLoading(true);
 
       const response = await axios.post(
         ` ${deploymentURL}/users/login`,
-        values
+        trimmedValues
       );
 
       if (response.status === 401) {
@@ -73,6 +77,7 @@ function Page() {
     } catch (error: any) {
       setError(error.response?.data?.message || "An unexpected error occurred");
       console.log("error happen");
+      console.log(trimmedValues);
     } finally {
       setLoading(false);
     }
